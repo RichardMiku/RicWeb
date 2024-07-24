@@ -1,0 +1,24 @@
+name: FTP Deploy
+
+on: [push] # 触发事件，这里设置为每次push时触发
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest # 运行环境
+
+    steps:
+    - uses: actions/checkout@v2 # 检出仓库
+
+    - name: Setup FTP Deploy Action
+      uses: SamKirkland/FTP-Deploy-Action@4.0.0 # 使用FTP Deploy Action
+
+    - name: Deploy to FTP Server
+      env:
+        FTP_SERVER: ${{ secrets.FTP_SERVER }} # FTP服务器地址
+        FTP_USERNAME: ${{ secrets.FTP_USERNAME }} # FTP用户名
+        FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }} # FTP密码
+        LOCAL_DIR: ./ # 本地目录，这里表示当前仓库根目录
+        REMOTE_DIR: /path/to/remote/directory/ # 远程目录，根据实际情况修改
+      run: |
+        echo "Starting FTP Deployment"
+        # 实际上，SamKirkland/FTP-Deploy-Action会自动处理上传，以下命令不需要手动执行
